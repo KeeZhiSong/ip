@@ -11,6 +11,10 @@ public class Task {
         return (isDone ? "X" : " ");
     }
 
+    public String getTypeIcon() {
+        return " ";
+    }
+
     public void markAsDone() {
         isDone = true;
     }
@@ -25,6 +29,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;
     }
 }
