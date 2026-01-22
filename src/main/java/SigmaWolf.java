@@ -3,6 +3,9 @@ import java.util.Scanner;
 public class SigmaWolf {
     public static void main(String[] args) {
         String line = "____________________________________________________________";
+        String[] tasks = new String[100];
+        int taskCount = 0;
+        
         System.out.println(line);
         System.out.println(" Greetings. I'm SigmaWolf, leader of the pack.");
         System.out.println(" State your business.");
@@ -13,7 +16,17 @@ public class SigmaWolf {
         
         while (!input.equals("bye")) {
             System.out.println(line);
-            System.out.println(" " + input);
+            
+            if (input.equals("list")) {
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println(" " + (i + 1) + ". " + tasks[i]);
+                }
+            } else {
+                tasks[taskCount] = input;
+                taskCount++;
+                System.out.println(" added: " + input);
+            }
+            
             System.out.println(line);
             input = scanner.nextLine();
         }
