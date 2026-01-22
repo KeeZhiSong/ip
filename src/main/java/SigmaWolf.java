@@ -32,6 +32,35 @@ public class SigmaWolf {
                 tasks[taskIndex].markAsNotDone();
                 System.out.println(" OK, I've marked this task as not done yet:");
                 System.out.println("   " + tasks[taskIndex]);
+            } else if (input.startsWith("todo ")) {
+                String description = input.substring(5);
+                tasks[taskCount] = new Todo(description);
+                taskCount++;
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + tasks[taskCount - 1]);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
+            } else if (input.startsWith("deadline ")) {
+                String rest = input.substring(9);
+                int byIndex = rest.indexOf("/by ");
+                String description = rest.substring(0, byIndex).trim();
+                String by = rest.substring(byIndex + 4).trim();
+                tasks[taskCount] = new Deadline(description, by);
+                taskCount++;
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + tasks[taskCount - 1]);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
+            } else if (input.startsWith("event ")) {
+                String rest = input.substring(6);
+                int fromIndex = rest.indexOf("/from ");
+                int toIndex = rest.indexOf("/to ");
+                String description = rest.substring(0, fromIndex).trim();
+                String from = rest.substring(fromIndex + 6, toIndex).trim();
+                String to = rest.substring(toIndex + 4).trim();
+                tasks[taskCount] = new Event(description, from, to);
+                taskCount++;
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + tasks[taskCount - 1]);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
             } else {
                 tasks[taskCount] = new Task(input);
                 taskCount++;
