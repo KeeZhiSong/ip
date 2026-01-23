@@ -14,6 +14,7 @@ fi
 
 # compile the code into the bin folder, terminates if error occurred
 if ! javac -cp ../src/main/java -Xlint:none -d ../bin \
+    ../src/main/java/TaskType.java \
     ../src/main/java/Task.java \
     ../src/main/java/Todo.java \
     ../src/main/java/Deadline.java \
