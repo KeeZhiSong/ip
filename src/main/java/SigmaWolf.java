@@ -1,5 +1,8 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class SigmaWolf {
     public static void main(String[] args) {
@@ -90,22 +93,27 @@ public class SigmaWolf {
                         throw new SigmaWolfException("The pack needs to know what deadline to track! Provide details.");
                     }
                     if (!rest.contains("/by ")) {
-                        throw new SigmaWolfException("Deadlines require a /by parameter! Format: deadline <task> /by <time>");
+                        throw new SigmaWolfException("Deadlines require a /by parameter! Format: deadline <task> /by <yyyy-MM-dd HHmm>");
                     }
                     int byIndex = rest.indexOf("/by ");
                     String description = rest.substring(0, byIndex).trim();
-                    String by = rest.substring(byIndex + 4).trim();
+                    String byString = rest.substring(byIndex + 4).trim();
                     if (description.isEmpty()) {
                         throw new SigmaWolfException("The deadline description cannot be empty!");
                     }
-                    if (by.isEmpty()) {
+                    if (byString.isEmpty()) {
                         throw new SigmaWolfException("The deadline time cannot be empty!");
                     }
-                    tasks.add(new Deadline(description, by));
-                    storage.save(tasks);
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks.get(tasks.size() - 1));
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                    try {
+                        LocalDateTime by = LocalDateTime.parse(byString, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+                        tasks.add(new Deadline(description, by));
+                        storage.save(tasks);
+                        System.out.println(" Got it. I've added this task:");
+                        System.out.println("   " + tasks.get(tasks.size() - 1));
+                        System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                    } catch (DateTimeParseException e) {
+                        throw new SigmaWolfException("Invalid date format! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)");
+                    }
                 } else if (input.equals("deadline")) {
                     throw new SigmaWolfException("The pack needs to know what deadline to track! Provide details.");
                 } else if (input.startsWith("event ")) {
@@ -114,24 +122,31 @@ public class SigmaWolf {
                         throw new SigmaWolfException("The pack needs to know what event to track! Provide details.");
                     }
                     if (!rest.contains("/from ") || !rest.contains("/to ")) {
-                        throw new SigmaWolfException("Events require /from and /to parameters! Format: event <task> /from <start> /to <end>");
+                        throw new SigmaWolfException("Events require /from and /to parameters! Format: event <task> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
                     }
                     int fromIndex = rest.indexOf("/from ");
                     int toIndex = rest.indexOf("/to ");
                     String description = rest.substring(0, fromIndex).trim();
-                    String from = rest.substring(fromIndex + 6, toIndex).trim();
-                    String to = rest.substring(toIndex + 4).trim();
+                    String fromString = rest.substring(fromIndex + 6, toIndex).trim();
+                    String toString = rest.substring(toIndex + 4).trim();
                     if (description.isEmpty()) {
                         throw new SigmaWolfException("The event description cannot be empty!");
                     }
-                    if (from.isEmpty() || to.isEmpty()) {
+                    if (fromString.isEmpty() || toString.isEmpty()) {
                         throw new SigmaWolfException("The event time cannot be empty!");
                     }
-                    tasks.add(new Event(description, from, to));
-                    storage.save(tasks);
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks.get(tasks.size() - 1));
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                    try {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+                        LocalDateTime from = LocalDateTime.parse(fromString, formatter);
+                        LocalDateTime to = LocalDateTime.parse(toString, formatter);
+                        tasks.add(new Event(description, from, to));
+                        storage.save(tasks);
+                        System.out.println(" Got it. I've added this task:");
+                        System.out.println("   " + tasks.get(tasks.size() - 1));
+                        System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                    } catch (DateTimeParseException e) {
+                        throw new SigmaWolfException("Invalid date format! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)");
+                    }
                 } else if (input.equals("event")) {
                     throw new SigmaWolfException("The pack needs to know what event to track! Provide details.");
                 } else {
