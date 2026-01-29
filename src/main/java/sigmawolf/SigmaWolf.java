@@ -1,3 +1,15 @@
+package sigmawolf;
+
+import sigmawolf.exception.SigmaWolfException;
+import sigmawolf.parser.Parser;
+import sigmawolf.storage.Storage;
+import sigmawolf.task.Task;
+import sigmawolf.task.TaskList;
+import sigmawolf.task.Todo;
+import sigmawolf.task.Deadline;
+import sigmawolf.task.Event;
+import sigmawolf.ui.Ui;
+
 public class SigmaWolf {
     private Storage storage;
     private TaskList tasks;

@@ -1,3 +1,10 @@
+package sigmawolf.storage;
+
+import sigmawolf.exception.SigmaWolfException;
+import sigmawolf.task.Task;
+import sigmawolf.task.Todo;
+import sigmawolf.task.Deadline;
+import sigmawolf.task.Event;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -109,7 +116,7 @@ public class Storage {
     }
 
     private String taskToString(Task task) {
-        String isDone = task.isDone ? "1" : "0";
+        String isDone = task.isDone() ? "1" : "0";
         String type = task.getTypeIcon();
         String description = task.getDescription();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
