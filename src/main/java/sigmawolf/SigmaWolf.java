@@ -43,34 +43,42 @@ public class SigmaWolf {
                         ui.showGoodbye();
                         ui.showLine();
                         break;
+
                     case "list":
                         ui.showTaskList(tasks);
                         ui.showLine();
                         break;
+
                     case "mark":
                         handleMark(input);
                         ui.showLine();
                         break;
+
                     case "unmark":
                         handleUnmark(input);
                         ui.showLine();
                         break;
+
                     case "delete":
                         handleDelete(input);
                         ui.showLine();
                         break;
+
                     case "todo":
                         handleTodo(arguments);
                         ui.showLine();
                         break;
+
                     case "deadline":
                         handleDeadline(arguments);
                         ui.showLine();
                         break;
+
                     case "event":
                         handleEvent(arguments);
                         ui.showLine();
                         break;
+
                     default:
                         throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
                 }
