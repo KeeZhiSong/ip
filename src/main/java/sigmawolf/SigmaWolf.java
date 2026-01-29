@@ -10,11 +10,20 @@ import sigmawolf.task.Deadline;
 import sigmawolf.task.Event;
 import sigmawolf.ui.Ui;
 
+/**
+ * SigmaWolf is a task management chatbot with an alpha wolf personality.
+ * It helps users track todos, deadlines, and events.
+ */
 public class SigmaWolf {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Creates a new SigmaWolf instance with the specified data file path.
+     *
+     * @param filePath The path to the data file for storing tasks.
+     */
     public SigmaWolf(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -26,6 +35,9 @@ public class SigmaWolf {
         }
     }
 
+    /**
+     * Runs the main loop of the chatbot, processing user commands until exit.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
