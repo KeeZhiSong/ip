@@ -1,3 +1,5 @@
+package sigmawolf.task;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -27,6 +29,10 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isDone() {
+        return isDone;
     }
 
     @Override

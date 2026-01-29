@@ -1,3 +1,6 @@
+package sigmawolf.ui;
+
+import sigmawolf.task.TaskList;
 import java.util.Scanner;
 
 public class Ui {

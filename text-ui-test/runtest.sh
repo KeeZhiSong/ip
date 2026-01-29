@@ -25,24 +25,24 @@ fi
 
 # compile the code into the bin folder, terminates if error occurred
 if ! javac -cp ../src/main/java -Xlint:none -d ../bin \
-    ../src/main/java/TaskType.java \
-    ../src/main/java/Task.java \
-    ../src/main/java/Todo.java \
-    ../src/main/java/Deadline.java \
-    ../src/main/java/Event.java \
-    ../src/main/java/SigmaWolfException.java \
-    ../src/main/java/Storage.java \
-    ../src/main/java/Ui.java \
-    ../src/main/java/TaskList.java \
-    ../src/main/java/Parser.java \
-    ../src/main/java/SigmaWolf.java
+    ../src/main/java/sigmawolf/task/TaskType.java \
+    ../src/main/java/sigmawolf/task/Task.java \
+    ../src/main/java/sigmawolf/task/Todo.java \
+    ../src/main/java/sigmawolf/task/Deadline.java \
+    ../src/main/java/sigmawolf/task/Event.java \
+    ../src/main/java/sigmawolf/task/TaskList.java \
+    ../src/main/java/sigmawolf/exception/SigmaWolfException.java \
+    ../src/main/java/sigmawolf/storage/Storage.java \
+    ../src/main/java/sigmawolf/ui/Ui.java \
+    ../src/main/java/sigmawolf/parser/Parser.java \
+    ../src/main/java/sigmawolf/SigmaWolf.java
 then
     echo "********** BUILD FAILURE **********"
     exit 1
 fi
 
 # run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ../bin SigmaWolf < input.txt > ACTUAL.TXT
+java -classpath ../bin sigmawolf.SigmaWolf < input.txt > ACTUAL.TXT
 
 # convert to UNIX format
 cp EXPECTED.TXT EXPECTED-UNIX.TXT
