@@ -9,19 +9,19 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [D][ ] return book (by: Sunday)
+   [D][ ] return book (by: Dec 02 2019 18:00)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Got it. I've added this task:
-   [E][ ] project meeting (from: Mon 2pm to: 4pm)
+   [E][ ] project meeting (from: Dec 02 2019 14:00 to: Dec 02 2019 16:00)
  Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] read book
- 2.[D][ ] return book (by: Sunday)
- 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+ 2.[D][ ] return book (by: Dec 02 2019 18:00)
+ 3.[E][ ] project meeting (from: Dec 02 2019 14:00 to: Dec 02 2019 16:00)
 ____________________________________________________________
 ____________________________________________________________
  Nice! I've marked this task as done:
@@ -30,8 +30,8 @@ ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][X] read book
- 2.[D][ ] return book (by: Sunday)
- 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+ 2.[D][ ] return book (by: Dec 02 2019 18:00)
+ 3.[E][ ] project meeting (from: Dec 02 2019 14:00 to: Dec 02 2019 16:00)
 ____________________________________________________________
 ____________________________________________________________
  OK, I've marked this task as not done yet:
@@ -39,13 +39,13 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
  Noted. I've removed this task:
-   [D][ ] return book (by: Sunday)
+   [D][ ] return book (by: Dec 02 2019 18:00)
  Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
  Here are the tasks in your list:
  1.[T][ ] read book
- 2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+ 2.[E][ ] project meeting (from: Dec 02 2019 14:00 to: Dec 02 2019 16:00)
 ____________________________________________________________
 ____________________________________________________________
  Understood. The pack dismisses you. Run along now. AWOOOOOOOOOOO!
