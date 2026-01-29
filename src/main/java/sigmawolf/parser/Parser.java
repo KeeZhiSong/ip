@@ -97,4 +97,12 @@ public class Parser {
             throw new SigmaWolfException("Invalid date format! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)");
         }
     }
+
+    public static String parseFind(String arguments) throws SigmaWolfException {
+        String keyword = arguments.trim();
+        if (keyword.isEmpty()) {
+            throw new SigmaWolfException("The pack needs a keyword to search for! Provide a search term.");
+        }
+        return keyword;
+    }
 }
