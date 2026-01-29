@@ -8,18 +8,40 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Parses user input and creates task objects.
+ */
 public class Parser {
     
+    /**
+     * Extracts the command word from user input.
+     *
+     * @param input The user input string.
+     * @return The command word.
+     */
     public static String getCommand(String input) {
         String[] parts = input.split(" ", 2);
         return parts[0];
     }
 
+    /**
+     * Extracts the arguments from user input.
+     *
+     * @param input The user input string.
+     * @return The arguments after the command word.
+     */
     public static String getArguments(String input) {
         String[] parts = input.split(" ", 2);
         return parts.length > 1 ? parts[1] : "";
     }
 
+    /**
+     * Parses the task number from user input.
+     *
+     * @param input The user input containing a task number.
+     * @return The zero-based task index.
+     * @throws SigmaWolfException If the input does not contain a valid task number.
+     */
     public static int parseTaskNumber(String input) throws SigmaWolfException {
         try {
             String[] parts = input.split(" ", 2);

@@ -13,13 +13,27 @@ import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Handles loading and saving tasks to the data file.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Creates a new Storage instance with the specified file path.
+     *
+     * @param filePath The path to the data file.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the data file.
+     *
+     * @return ArrayList of tasks loaded from the file.
+     * @throws SigmaWolfException If there is an error reading the file.
+     */
     public ArrayList<Task> load() throws SigmaWolfException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
