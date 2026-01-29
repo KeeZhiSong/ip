@@ -4,7 +4,17 @@ import java.util.ArrayList;
 public class SigmaWolf {
     public static void main(String[] args) {
         String line = "____________________________________________________________";
+        Storage storage = new Storage("./data/sigmawolf.txt");
         ArrayList<Task> tasks = new ArrayList<>();
+        
+        // Load tasks from file
+        try {
+            tasks = storage.load();
+        } catch (SigmaWolfException e) {
+            System.out.println(line);
+            System.out.println(" GRRR!!! " + e.getMessage());
+            System.out.println(line);
+        }
         
         System.out.println(line);
         System.out.println(" Greetings. I'm SigmaWolf, leader of the pack.");
@@ -32,6 +42,7 @@ public class SigmaWolf {
                         throw new SigmaWolfException("Invalid task number! The pack only has " + tasks.size() + " tasks.");
                     }
                     tasks.get(taskIndex).markAsDone();
+                    storage.save(tasks);
                     System.out.println(" Nice! I've marked this task as done:");
                     System.out.println("   " + tasks.get(taskIndex));
                 } else if (input.startsWith("unmark ")) {
@@ -43,6 +54,7 @@ public class SigmaWolf {
                         throw new SigmaWolfException("Invalid task number! The pack only has " + tasks.size() + " tasks.");
                     }
                     tasks.get(taskIndex).markAsNotDone();
+                    storage.save(tasks);
                     System.out.println(" OK, I've marked this task as not done yet:");
                     System.out.println("   " + tasks.get(taskIndex));
                 } else if (input.startsWith("delete ")) {
@@ -54,6 +66,7 @@ public class SigmaWolf {
                         throw new SigmaWolfException("Invalid task number! The pack only has " + tasks.size() + " tasks.");
                     }
                     Task removedTask = tasks.remove(taskIndex);
+                    storage.save(tasks);
                     System.out.println(" Noted. I've removed this task:");
                     System.out.println("   " + removedTask);
                     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
@@ -65,6 +78,7 @@ public class SigmaWolf {
                         throw new SigmaWolfException("The pack cannot track an empty task! Tell me what needs to be done.");
                     }
                     tasks.add(new Todo(description));
+                    storage.save(tasks);
                     System.out.println(" Got it. I've added this task:");
                     System.out.println("   " + tasks.get(tasks.size() - 1));
                     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
@@ -88,6 +102,7 @@ public class SigmaWolf {
                         throw new SigmaWolfException("The deadline time cannot be empty!");
                     }
                     tasks.add(new Deadline(description, by));
+                    storage.save(tasks);
                     System.out.println(" Got it. I've added this task:");
                     System.out.println("   " + tasks.get(tasks.size() - 1));
                     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
@@ -113,6 +128,7 @@ public class SigmaWolf {
                         throw new SigmaWolfException("The event time cannot be empty!");
                     }
                     tasks.add(new Event(description, from, to));
+                    storage.save(tasks);
                     System.out.println(" Got it. I've added this task:");
                     System.out.println("   " + tasks.get(tasks.size() - 1));
                     System.out.println(" Now you have " + tasks.size() + " tasks in the list.");

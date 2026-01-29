@@ -20,6 +20,7 @@ if ! javac -cp ../src/main/java -Xlint:none -d ../bin \
     ../src/main/java/Deadline.java \
     ../src/main/java/Event.java \
     ../src/main/java/SigmaWolfException.java \
+    ../src/main/java/Storage.java \
     ../src/main/java/SigmaWolf.java
 then
     echo "********** BUILD FAILURE **********"
