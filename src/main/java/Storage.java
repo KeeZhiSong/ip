@@ -3,6 +3,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Storage {
     private String filePath;
@@ -55,17 +57,21 @@ public class Storage {
             String description = parts[2];
             
             Task task;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             switch (type) {
                 case "T":
                     task = new Todo(description);
                     break;
                 case "D":
                     if (parts.length < 4) return null;
-                    task = new Deadline(description, parts[3]);
+                    LocalDateTime by = LocalDateTime.parse(parts[3], formatter);
+                    task = new Deadline(description, by);
                     break;
                 case "E":
                     if (parts.length < 5) return null;
-                    task = new Event(description, parts[3], parts[4]);
+                    LocalDateTime from = LocalDateTime.parse(parts[3], formatter);
+                    LocalDateTime to = LocalDateTime.parse(parts[4], formatter);
+                    task = new Event(description, from, to);
                     break;
                 default:
                     return null; // Unknown type, skip
@@ -106,15 +112,17 @@ public class Storage {
         String isDone = task.isDone ? "1" : "0";
         String type = task.getTypeIcon();
         String description = task.getDescription();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         
         if (task instanceof Todo) {
             return String.format("T | %s | %s", isDone, description);
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return String.format("D | %s | %s | %s", isDone, description, deadline.by);
+            return String.format("D | %s | %s | %s", isDone, description, deadline.getBy().format(formatter));
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return String.format("E | %s | %s | %s | %s", isDone, description, event.from, event.to);
+            return String.format("E | %s | %s | %s | %s", isDone, description, 
+                event.getFrom().format(formatter), event.getTo().format(formatter));
         }
         
         return "";
