@@ -83,6 +83,10 @@ public class SigmaWolf {
                         handleEvent(arguments);
                         ui.showLine();
                         break;
+                    case "find":
+                        handleFind(arguments);
+                        ui.showLine();
+                        break;
                     default:
                         throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
                 }
@@ -142,6 +146,12 @@ public class SigmaWolf {
         tasks.add(event);
         storage.save(tasks.getTasks());
         ui.showTaskAdded(event.toString(), tasks.size());
+    }
+
+    private void handleFind(String arguments) throws SigmaWolfException {
+        String keyword = Parser.parseFind(arguments);
+        TaskList matchingTasks = tasks.findTasks(keyword);
+        ui.showFindResults(matchingTasks);
     }
 
     public static void main(String[] args) {
