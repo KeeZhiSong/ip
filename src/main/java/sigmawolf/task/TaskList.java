@@ -2,6 +2,9 @@ package sigmawolf.task;
 
 import java.util.ArrayList;
 
+/**
+ * Manages a list of tasks.
+ */
 public class TaskList {
     private ArrayList<Task> tasks;
 

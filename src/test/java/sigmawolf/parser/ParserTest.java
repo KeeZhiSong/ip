@@ -26,7 +26,7 @@ public class ParserTest {
     public void getArguments_validInput_success() {
         assertEquals("read book", Parser.getArguments("todo read book"));
         assertEquals("", Parser.getArguments("list"));
-        assertEquals("return book /by 2026-02-15 1800", 
+        assertEquals("return book /by 2026-02-15 1800",
                 Parser.getArguments("deadline return book /by 2026-02-15 1800"));
     }
 

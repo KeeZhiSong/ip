@@ -19,7 +19,7 @@ public class TodoTest {
     public void markAsDone_newTask_markedCorrectly() {
         Todo todo = new Todo("read book");
         assertFalse(todo.isDone());
-        
+
         todo.markAsDone();
         assertTrue(todo.isDone());
         assertEquals("X", todo.getStatusIcon());
@@ -30,7 +30,7 @@ public class TodoTest {
         Todo todo = new Todo("read book");
         todo.markAsDone();
         assertTrue(todo.isDone());
-        
+
         todo.markAsNotDone();
         assertFalse(todo.isDone());
         assertEquals(" ", todo.getStatusIcon());

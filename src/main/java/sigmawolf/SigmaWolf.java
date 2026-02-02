@@ -3,11 +3,11 @@ package sigmawolf;
 import sigmawolf.exception.SigmaWolfException;
 import sigmawolf.parser.Parser;
 import sigmawolf.storage.Storage;
+import sigmawolf.task.Deadline;
+import sigmawolf.task.Event;
 import sigmawolf.task.Task;
 import sigmawolf.task.TaskList;
 import sigmawolf.task.Todo;
-import sigmawolf.task.Deadline;
-import sigmawolf.task.Event;
 import sigmawolf.ui.Ui;
 
 /**
@@ -41,54 +41,54 @@ public class SigmaWolf {
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
-        
+
         while (!isExit) {
             try {
                 String input = ui.readCommand();
                 ui.showLine();
                 String command = Parser.getCommand(input);
                 String arguments = Parser.getArguments(input);
-                
+
                 switch (command) {
-                    case "bye":
-                        isExit = true;
-                        ui.showGoodbye();
-                        ui.showLine();
-                        break;
-                    case "list":
-                        ui.showTaskList(tasks);
-                        ui.showLine();
-                        break;
-                    case "mark":
-                        handleMark(input);
-                        ui.showLine();
-                        break;
-                    case "unmark":
-                        handleUnmark(input);
-                        ui.showLine();
-                        break;
-                    case "delete":
-                        handleDelete(input);
-                        ui.showLine();
-                        break;
-                    case "todo":
-                        handleTodo(arguments);
-                        ui.showLine();
-                        break;
-                    case "deadline":
-                        handleDeadline(arguments);
-                        ui.showLine();
-                        break;
-                    case "event":
-                        handleEvent(arguments);
-                        ui.showLine();
-                        break;
-                    case "find":
-                        handleFind(arguments);
-                        ui.showLine();
-                        break;
-                    default:
-                        throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
+                case "bye":
+                    isExit = true;
+                    ui.showGoodbye();
+                    ui.showLine();
+                    break;
+                case "list":
+                    ui.showTaskList(tasks);
+                    ui.showLine();
+                    break;
+                case "mark":
+                    handleMark(input);
+                    ui.showLine();
+                    break;
+                case "unmark":
+                    handleUnmark(input);
+                    ui.showLine();
+                    break;
+                case "delete":
+                    handleDelete(input);
+                    ui.showLine();
+                    break;
+                case "todo":
+                    handleTodo(arguments);
+                    ui.showLine();
+                    break;
+                case "deadline":
+                    handleDeadline(arguments);
+                    ui.showLine();
+                    break;
+                case "event":
+                    handleEvent(arguments);
+                    ui.showLine();
+                    break;
+                case "find":
+                    handleFind(arguments);
+                    ui.showLine();
+                    break;
+                default:
+                    throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
                 }
             } catch (SigmaWolfException e) {
                 ui.showError(e.getMessage());
