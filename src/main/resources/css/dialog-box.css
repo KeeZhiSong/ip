@@ -1,0 +1,47 @@
+/* Dark Alpha Wolf Dialog Styling */
+
+/* User message bubble */
+.label {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: #cccccc;
+    -fx-border-color: #4a4a4a;
+    -fx-border-width: 1px;
+    -fx-background-radius: 12px 12px 2px 12px;
+    -fx-border-radius: 12px 12px 2px 12px;
+    -fx-padding: 10px 15px;
+    -fx-font-size: 13px;
+    -fx-font-family: "Arial";
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 6, 0.3, 2, 2);
+}
+
+/* Wolf's reply bubble */
+.reply-label {
+    -fx-background-color: #1a1a1a;
+    -fx-background-radius: 12px 12px 12px 2px;
+    -fx-border-radius: 12px 12px 12px 2px;
+    -fx-border-color: #3a3a3a;
+    -fx-text-fill: #bbbbbb;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 8, 0.4, 2, 2);
+}
+
+/* Avatar/Profile Picture Styling */
+#displayPicture {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0.5, 0, 0);
+}
+
+/* Command-specific subtle accents */
+.add-label {
+    -fx-border-color: #556655;
+}
+
+.marked-label {
+    -fx-border-color: #665544;
+}
+
+.delete-label {
+    -fx-border-color: #664444;
+}
+
+.find-label {
+    -fx-border-color: #445566;
+}
