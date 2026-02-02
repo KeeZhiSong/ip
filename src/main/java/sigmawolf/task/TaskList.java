@@ -45,4 +45,41 @@ public class TaskList {
         }
         return new TaskList(matchingTasks);
     }
+
+    /**
+     * Marks a task as done.
+     *
+     * @param index The zero-based index of the task to mark.
+     */
+    public void markTask(int index) {
+        tasks.get(index).markAsDone();
+    }
+
+    /**
+     * Marks a task as not done.
+     *
+     * @param index The zero-based index of the task to unmark.
+     */
+    public void unmarkTask(int index) {
+        tasks.get(index).markAsNotDone();
+    }
+
+    /**
+     * Deletes a task from the list.
+     *
+     * @param index The zero-based index of the task to delete.
+     * @return The deleted task.
+     */
+    public Task deleteTask(int index) {
+        return tasks.remove(index);
+    }
+
+    /**
+     * Adds a task to the list.
+     *
+     * @param task The task to add.
+     */
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
 }
