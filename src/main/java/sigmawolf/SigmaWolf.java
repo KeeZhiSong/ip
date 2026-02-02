@@ -154,6 +154,140 @@ public class SigmaWolf {
         ui.showFindResults(matchingTasks);
     }
 
+    /**
+     * Generates a response for the user's chat message.
+     *
+     * @param input The user's input command.
+     * @return The chatbot's response.
+     */
+    public String getResponse(String input) {
+        try {
+            String command = Parser.getCommand(input);
+            String arguments = Parser.getArguments(input);
+
+            switch (command) {
+            case "bye":
+                return "Understood. The pack dismisses you. Run along now. AWOOOOOOOOOOO!";
+            case "list":
+                return getTaskListString();
+            case "mark":
+                return handleMarkForGui(input);
+            case "unmark":
+                return handleUnmarkForGui(input);
+            case "delete":
+                return handleDeleteForGui(input);
+            case "todo":
+                return handleTodoForGui(arguments);
+            case "deadline":
+                return handleDeadlineForGui(arguments);
+            case "event":
+                return handleEventForGui(arguments);
+            case "find":
+                return handleFindForGui(arguments);
+            default:
+                throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
+            }
+        } catch (SigmaWolfException e) {
+            return "GRRR!!! " + e.getMessage();
+        }
+    }
+
+    private String getTaskListString() {
+        if (tasks.size() == 0) {
+            return "Your task list is empty.";
+        }
+        StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append((i + 1)).append(".").append(tasks.get(i)).append("\n");
+        }
+        return sb.toString().trim();
+    }
+
+    private String handleMarkForGui(String input) throws SigmaWolfException {
+        int taskIndex = Parser.parseTaskIndex(input);
+        Task task = tasks.get(taskIndex);
+        tasks.markTask(taskIndex);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "Nice! I've marked this task as done:\n  " + task;
+    }
+
+    private String handleUnmarkForGui(String input) throws SigmaWolfException {
+        int taskIndex = Parser.parseTaskIndex(input);
+        Task task = tasks.get(taskIndex);
+        tasks.unmarkTask(taskIndex);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "OK, I've marked this task as not done yet:\n  " + task;
+    }
+
+    private String handleDeleteForGui(String input) throws SigmaWolfException {
+        int taskIndex = Parser.parseTaskIndex(input);
+        Task task = tasks.deleteTask(taskIndex);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "Noted. I've removed this task:\n  " + task
+                + "\nNow you have " + tasks.size() + " tasks in the list.";
+    }
+
+    private String handleTodoForGui(String arguments) throws SigmaWolfException {
+        Todo todo = Parser.parseTodo(arguments);
+        tasks.addTask(todo);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "Got it. I've added this task:\n  " + todo
+                + "\nNow you have " + tasks.size() + " tasks in the list.";
+    }
+
+    private String handleDeadlineForGui(String arguments) throws SigmaWolfException {
+        Deadline deadline = Parser.parseDeadline(arguments);
+        tasks.addTask(deadline);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "Got it. I've added this task:\n  " + deadline
+                + "\nNow you have " + tasks.size() + " tasks in the list.";
+    }
+
+    private String handleEventForGui(String arguments) throws SigmaWolfException {
+        Event event = Parser.parseEvent(arguments);
+        tasks.addTask(event);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "Got it. I've added this task:\n  " + event
+                + "\nNow you have " + tasks.size() + " tasks in the list.";
+    }
+
+    private String handleFindForGui(String arguments) throws SigmaWolfException {
+        String keyword = Parser.parseFind(arguments);
+        TaskList matchingTasks = tasks.findTasks(keyword);
+        if (matchingTasks.size() == 0) {
+            return "No matching tasks found in your list.";
+        }
+        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            sb.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
+        }
+        return sb.toString().trim();
+    }
+
     public static void main(String[] args) {
         new SigmaWolf("./data/sigmawolf.txt").run();
     }

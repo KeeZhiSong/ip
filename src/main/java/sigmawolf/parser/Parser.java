@@ -131,4 +131,19 @@ public class Parser {
         }
         return keyword;
     }
+
+    /**
+     * Parses a task index from a string.
+     *
+     * @param input The string containing the task index.
+     * @return The zero-based task index.
+     * @throws SigmaWolfException If the input does not contain a valid index.
+     */
+    public static int parseTaskIndex(String input) throws SigmaWolfException {
+        try {
+            return Integer.parseInt(input.trim()) - 1;
+        } catch (NumberFormatException e) {
+            throw new SigmaWolfException("That's not a valid number! Use numbers for task indices.");
+        }
+    }
 }
