@@ -3,6 +3,9 @@ package sigmawolf.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a task that occurs during a specific time period.
+ */
 public class Event extends Task {
     protected LocalDateTime from;
     protected LocalDateTime to;
@@ -24,7 +27,7 @@ public class Event extends Task {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
-        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description 
+        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description
             + " (from: " + from.format(formatter) + " to: " + to.format(formatter) + ")";
     }
 }

@@ -1,18 +1,19 @@
 package sigmawolf.parser;
 
-import sigmawolf.exception.SigmaWolfException;
-import sigmawolf.task.Todo;
-import sigmawolf.task.Deadline;
-import sigmawolf.task.Event;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import sigmawolf.exception.SigmaWolfException;
+import sigmawolf.task.Deadline;
+import sigmawolf.task.Event;
+import sigmawolf.task.Todo;
 
 /**
  * Parses user input and creates task objects.
  */
 public class Parser {
-    
+
     /**
      * Extracts the command word from user input.
      *
@@ -67,20 +68,21 @@ public class Parser {
             throw new SigmaWolfException("The pack needs to know what deadline to track! Provide details.");
         }
         if (!arguments.contains("/by ")) {
-            throw new SigmaWolfException("Deadlines require a /by parameter! Format: deadline <task> /by <yyyy-MM-dd HHmm>");
+            throw new SigmaWolfException(
+                    "Deadlines require a /by parameter! Format: deadline <task> /by <yyyy-MM-dd HHmm>");
         }
-        
+
         int byIndex = arguments.indexOf("/by ");
         String description = arguments.substring(0, byIndex).trim();
         String byString = arguments.substring(byIndex + 4).trim();
-        
+
         if (description.isEmpty()) {
             throw new SigmaWolfException("The deadline description cannot be empty!");
         }
         if (byString.isEmpty()) {
             throw new SigmaWolfException("The deadline time cannot be empty!");
         }
-        
+
         try {
             LocalDateTime by = LocalDateTime.parse(byString, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
             return new Deadline(description, by);
@@ -94,22 +96,24 @@ public class Parser {
             throw new SigmaWolfException("The pack needs to know what event to track! Provide details.");
         }
         if (!arguments.contains("/from ") || !arguments.contains("/to ")) {
-            throw new SigmaWolfException("Events require /from and /to parameters! Format: event <task> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+            throw new SigmaWolfException(
+                    "Events require /from and /to parameters! "
+                    + "Format: event <task> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
         }
-        
+
         int fromIndex = arguments.indexOf("/from ");
         int toIndex = arguments.indexOf("/to ");
         String description = arguments.substring(0, fromIndex).trim();
         String fromString = arguments.substring(fromIndex + 6, toIndex).trim();
         String toString = arguments.substring(toIndex + 4).trim();
-        
+
         if (description.isEmpty()) {
             throw new SigmaWolfException("The event description cannot be empty!");
         }
         if (fromString.isEmpty() || toString.isEmpty()) {
             throw new SigmaWolfException("The event time cannot be empty!");
         }
-        
+
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
             LocalDateTime from = LocalDateTime.parse(fromString, formatter);

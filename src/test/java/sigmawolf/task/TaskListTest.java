@@ -75,7 +75,7 @@ public class TaskListTest {
         tasks.add(todo1);  // "read book"
         tasks.add(todo2);  // "return book"
         tasks.add(todo3);  // "buy groceries"
-        
+
         TaskList results = tasks.findTasks("book");
         assertEquals(2, results.size());
         assertEquals(todo1, results.get(0));
@@ -86,7 +86,7 @@ public class TaskListTest {
     public void findTasks_noMatches_returnsEmptyList() {
         tasks.add(todo1);
         tasks.add(todo2);
-        
+
         TaskList results = tasks.findTasks("meeting");
         assertEquals(0, results.size());
     }
@@ -95,7 +95,7 @@ public class TaskListTest {
     public void findTasks_caseInsensitive_returnsMatches() {
         tasks.add(todo1);  // "read book"
         tasks.add(todo2);  // "return book"
-        
+
         TaskList results = tasks.findTasks("BOOK");
         assertEquals(2, results.size());
     }
@@ -104,7 +104,7 @@ public class TaskListTest {
     public void findTasks_partialMatch_returnsMatches() {
         tasks.add(todo1);  // "read book"
         tasks.add(todo3);  // "buy groceries"
-        
+
         TaskList results = tasks.findTasks("gro");
         assertEquals(1, results.size());
         assertEquals(todo3, results.get(0));
@@ -114,7 +114,7 @@ public class TaskListTest {
     public void getTasks_returnsUnderlyingList() {
         tasks.add(todo1);
         tasks.add(todo2);
-        
+
         ArrayList<Task> taskList = tasks.getTasks();
         assertEquals(2, taskList.size());
         assertTrue(taskList.contains(todo1));

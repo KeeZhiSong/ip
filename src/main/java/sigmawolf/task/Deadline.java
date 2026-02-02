@@ -3,6 +3,9 @@ package sigmawolf.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a task with a deadline.
+ */
 public class Deadline extends Task {
     protected LocalDateTime by;
 
@@ -17,7 +20,7 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description 
+        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description
             + " (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm")) + ")";
     }
 }
