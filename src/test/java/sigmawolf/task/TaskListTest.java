@@ -1,12 +1,12 @@
 package sigmawolf.task;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TaskListTest {
     private TaskList tasks;
@@ -72,9 +72,9 @@ public class TaskListTest {
 
     @Test
     public void findTasks_matchingKeyword_returnsMatches() {
-        tasks.add(todo1);  // "read book"
-        tasks.add(todo2);  // "return book"
-        tasks.add(todo3);  // "buy groceries"
+        tasks.add(todo1); // "read book"
+        tasks.add(todo2); // "return book"
+        tasks.add(todo3); // "buy groceries"
 
         TaskList results = tasks.findTasks("book");
         assertEquals(2, results.size());
@@ -93,8 +93,8 @@ public class TaskListTest {
 
     @Test
     public void findTasks_caseInsensitive_returnsMatches() {
-        tasks.add(todo1);  // "read book"
-        tasks.add(todo2);  // "return book"
+        tasks.add(todo1); // "read book"
+        tasks.add(todo2); // "return book"
 
         TaskList results = tasks.findTasks("BOOK");
         assertEquals(2, results.size());
@@ -102,8 +102,8 @@ public class TaskListTest {
 
     @Test
     public void findTasks_partialMatch_returnsMatches() {
-        tasks.add(todo1);  // "read book"
-        tasks.add(todo3);  // "buy groceries"
+        tasks.add(todo1); // "read book"
+        tasks.add(todo3); // "buy groceries"
 
         TaskList results = tasks.findTasks("gro");
         assertEquals(1, results.size());

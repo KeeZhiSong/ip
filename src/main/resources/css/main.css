@@ -1,0 +1,103 @@
+/* Dark Alpha Wolf Theme */
+.root {
+    /* Dark alpha wolf colors */
+    wolf-black: #0a0a0a;
+    wolf-dark: #1a1a1a;
+    wolf-gray: #2a2a2a;
+    wolf-steel: #4a4a4a;
+    wolf-silver: #8a8a8a;
+    wolf-accent: #3a4a5a;
+    
+    -fx-background-color: wolf-black;
+    -fx-background-image: url("../images/werewolf-background.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+/* Text Field Styling */
+.text-field {
+    -fx-background-color: wolf-dark;
+    -fx-text-fill: wolf-silver;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-border-color: wolf-steel;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-prompt-text-fill: #555;
+    -fx-padding: 10px;
+}
+
+.text-field:focused {
+    -fx-border-color: wolf-silver;
+    -fx-border-width: 0 0 2px 0;
+}
+
+/* Send Button Styling */
+.button {
+    -fx-background-color: wolf-gray;
+    -fx-text-fill: wolf-silver;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial";
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: wolf-steel;
+    -fx-border-width: 0 0 0 1px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: wolf-steel;
+    -fx-text-fill: #ffffff;
+}
+
+.button:pressed {
+    -fx-background-color: wolf-dark;
+    -fx-text-fill: wolf-silver;
+}
+
+/* ScrollPane Styling */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Scrollbar Styling */
+.scroll-bar {
+    -fx-background-color: wolf-dark;
+    -fx-pref-width: 8px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: wolf-steel;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: wolf-silver;
+}
+
+/* Hide scroll bar increment/decrement buttons */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}
+
+/* VBox (dialog container) */
+#dialogContainer {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}

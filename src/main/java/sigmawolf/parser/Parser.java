@@ -55,6 +55,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a todo task from the given arguments.
+     *
+     * @param arguments The arguments containing the task description.
+     * @return A Todo task.
+     * @throws SigmaWolfException If the description is empty.
+     */
     public static Todo parseTodo(String arguments) throws SigmaWolfException {
         String description = arguments.trim();
         if (description.isEmpty()) {
@@ -63,6 +70,13 @@ public class Parser {
         return new Todo(description);
     }
 
+    /**
+     * Parses a deadline task from the given arguments.
+     *
+     * @param arguments The arguments containing the task description and deadline.
+     * @return A Deadline task.
+     * @throws SigmaWolfException If arguments are invalid or date format is incorrect.
+     */
     public static Deadline parseDeadline(String arguments) throws SigmaWolfException {
         if (arguments.trim().isEmpty()) {
             throw new SigmaWolfException("The pack needs to know what deadline to track! Provide details.");
@@ -91,6 +105,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses an event task from the given arguments.
+     *
+     * @param arguments The arguments containing the task description, start and end time.
+     * @return An Event task.
+     * @throws SigmaWolfException If arguments are invalid or date format is incorrect.
+     */
     public static Event parseEvent(String arguments) throws SigmaWolfException {
         if (arguments.trim().isEmpty()) {
             throw new SigmaWolfException("The pack needs to know what event to track! Provide details.");
@@ -124,6 +145,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses the find command arguments to extract the search keyword.
+     *
+     * @param arguments The arguments containing the keyword to search for.
+     * @return The search keyword.
+     * @throws SigmaWolfException If the keyword is empty.
+     */
     public static String parseFind(String arguments) throws SigmaWolfException {
         String keyword = arguments.trim();
         if (keyword.isEmpty()) {

@@ -25,6 +25,9 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
     private Image sigmaWolfImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
+    /**
+     * Initializes the controller and displays the welcome message.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
@@ -50,10 +53,29 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = sigmaWolf.getResponse(input);
+        String commandType = getCommandType(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, sigmaWolfImage)
+                DialogBox.getDukeDialog(response, sigmaWolfImage, commandType)
         );
         userInput.clear();
+    }
+
+    private String getCommandType(String input) {
+        String command = input.trim().split(" ")[0].toLowerCase();
+        switch (command) {
+        case "todo":
+        case "deadline":
+        case "event":
+            return "add";
+        case "mark":
+            return "marked";
+        case "delete":
+            return "delete";
+        case "find":
+            return "find";
+        default:
+            return "default";
+        }
     }
 }

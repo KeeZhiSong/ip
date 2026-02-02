@@ -21,10 +21,10 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            stage.setTitle("SigmaWolf");
+            stage.setTitle("SigmaWolf - Alpha Chat");
+            stage.setMinHeight(400);
+            stage.setMinWidth(417);
             fxmlLoader.<MainWindow>getController().setSigmaWolf(sigmaWolf);
-            stage.setMinHeight(600);
-            stage.setMinWidth(400);
             stage.show();
             stage.toFront();
             stage.requestFocus();

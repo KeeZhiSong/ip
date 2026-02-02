@@ -114,6 +114,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves the list of tasks to the file.
+     *
+     * @param tasks The list of tasks to save.
+     * @throws SigmaWolfException If there is an error writing to the file.
+     */
     public void save(ArrayList<Task> tasks) throws SigmaWolfException {
         try {
             File file = new File(filePath);

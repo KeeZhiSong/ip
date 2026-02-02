@@ -44,6 +44,26 @@ public class DialogBox extends HBox {
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
+        dialog.getStyleClass().add("reply-label");
+    }
+
+    private void applyCommandStyle(String commandType) {
+        switch (commandType) {
+        case "add":
+            dialog.getStyleClass().add("add-label");
+            break;
+        case "marked":
+            dialog.getStyleClass().add("marked-label");
+            break;
+        case "delete":
+            dialog.getStyleClass().add("delete-label");
+            break;
+        case "find":
+            dialog.getStyleClass().add("find-label");
+            break;
+        default:
+            // No special styling
+        }
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
@@ -53,6 +73,13 @@ public class DialogBox extends HBox {
     public static DialogBox getDukeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
+        return db;
+    }
+
+    public static DialogBox getDukeDialog(String text, Image img, String commandType) {
+        var db = new DialogBox(text, img);
+        db.flip();
+        db.applyCommandStyle(commandType);
         return db;
     }
 }
