@@ -13,6 +13,8 @@ import sigmawolf.task.Todo;
  * Parses user input and creates task objects.
  */
 public class Parser {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final String DATE_FORMAT_ERROR = "Invalid date format! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)";
 
     /**
      * Extracts the command word from user input.
@@ -98,10 +100,10 @@ public class Parser {
         }
 
         try {
-            LocalDateTime by = LocalDateTime.parse(byString, DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"));
+            LocalDateTime by = parseDateTime(byString);
             return new Deadline(description, by);
         } catch (DateTimeParseException e) {
-            throw new SigmaWolfException("Invalid date format! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)");
+            throw new SigmaWolfException(DATE_FORMAT_ERROR);
         }
     }
 
@@ -136,13 +138,23 @@ public class Parser {
         }
 
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-            LocalDateTime from = LocalDateTime.parse(fromString, formatter);
-            LocalDateTime to = LocalDateTime.parse(toString, formatter);
+            LocalDateTime from = parseDateTime(fromString);
+            LocalDateTime to = parseDateTime(toString);
             return new Event(description, from, to);
         } catch (DateTimeParseException e) {
-            throw new SigmaWolfException("Invalid date format! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)");
+            throw new SigmaWolfException(DATE_FORMAT_ERROR);
         }
+    }
+
+    /**
+     * Parses a date-time string into a LocalDateTime object.
+     *
+     * @param dateTimeString The date-time string to parse.
+     * @return The parsed LocalDateTime.
+     * @throws DateTimeParseException If the string is not in the correct format.
+     */
+    private static LocalDateTime parseDateTime(String dateTimeString) {
+        return LocalDateTime.parse(dateTimeString, DATE_FORMATTER);
     }
 
     /**
