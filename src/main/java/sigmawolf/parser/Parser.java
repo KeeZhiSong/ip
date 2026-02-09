@@ -21,6 +21,7 @@ public class Parser {
      * @return The command word.
      */
     public static String getCommand(String input) {
+        assert input != null && !input.isEmpty() : "Input cannot be null or empty";
         String[] parts = input.split(" ", 2);
         return parts[0];
     }
@@ -32,6 +33,7 @@ public class Parser {
      * @return The arguments after the command word.
      */
     public static String getArguments(String input) {
+        assert input != null : "Input cannot be null";
         String[] parts = input.split(" ", 2);
         return parts.length > 1 ? parts[1] : "";
     }
