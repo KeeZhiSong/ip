@@ -18,14 +18,17 @@ public class TaskList {
     }
 
     public void add(Task task) {
+        assert task != null : "Task to add cannot be null";
         tasks.add(task);
     }
 
     public Task remove(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds: " + index;
         return tasks.remove(index);
     }
 
     public Task get(int index) {
+        assert index >= 0 && index < tasks.size() : "Index out of bounds: " + index;
         return tasks.get(index);
     }
 
@@ -44,6 +47,7 @@ public class TaskList {
      * @return A new TaskList containing matching tasks.
      */
     public TaskList findTasks(String keyword) {
+        assert keyword != null : "Search keyword cannot be null";
         ArrayList<Task> matchingTasks = tasks.stream()
                 .filter(task -> task.getDescription().toLowerCase().contains(keyword.toLowerCase()))
                 .collect(Collectors.toCollection(ArrayList::new));
