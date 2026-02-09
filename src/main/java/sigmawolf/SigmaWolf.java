@@ -15,6 +15,8 @@ import sigmawolf.ui.Ui;
  * It helps users track todos, deadlines, and events.
  */
 public class SigmaWolf {
+    private static final String ERROR_PREFIX = "GRRR!!! ";
+    
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
@@ -188,7 +190,7 @@ public class SigmaWolf {
                 throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
             }
         } catch (SigmaWolfException e) {
-            return "GRRR!!! " + e.getMessage();
+            return ERROR_PREFIX + e.getMessage();
         }
     }
 
