@@ -171,11 +171,11 @@ public class SigmaWolf {
             case "list":
                 return getTaskListString();
             case "mark":
-                return handleMarkForGui(input);
+                return handleMarkForGui(arguments);
             case "unmark":
-                return handleUnmarkForGui(input);
+                return handleUnmarkForGui(arguments);
             case "delete":
-                return handleDeleteForGui(input);
+                return handleDeleteForGui(arguments);
             case "todo":
                 return handleTodoForGui(arguments);
             case "deadline":

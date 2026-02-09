@@ -12,6 +12,8 @@
     -fx-font-size: 13px;
     -fx-font-family: "Arial";
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 6, 0.3, 2, 2);
+    -fx-max-width: 300px;
+    -fx-pref-width: -1;
 }
 
 /* Wolf's reply bubble */
@@ -22,6 +24,8 @@
     -fx-border-color: #3a3a3a;
     -fx-text-fill: #bbbbbb;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 8, 0.4, 2, 2);
+    -fx-max-width: 300px;
+    -fx-pref-width: -1;
 }
 
 /* Avatar/Profile Picture Styling */
