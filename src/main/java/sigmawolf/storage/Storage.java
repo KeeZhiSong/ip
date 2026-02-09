@@ -3,10 +3,12 @@ package sigmawolf.storage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import sigmawolf.exception.SigmaWolfException;
 import sigmawolf.task.Deadline;
@@ -36,7 +38,6 @@ public class Storage {
      * @throws SigmaWolfException If there is an error reading the file.
      */
     public ArrayList<Task> load() throws SigmaWolfException {
-        ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
 
         // Create directory if it doesn't exist
@@ -47,24 +48,17 @@ public class Storage {
 
         // If file doesn't exist, return empty list
         if (!file.exists()) {
-            return tasks;
+            return new ArrayList<>();
         }
 
         try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                Task task = parseTask(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
-            }
-            scanner.close();
+            return Files.lines(Paths.get(filePath))
+                    .map(this::parseTask)
+                    .filter(task -> task != null)
+                    .collect(Collectors.toCollection(ArrayList::new));
         } catch (IOException e) {
             throw new SigmaWolfException("The pack couldn't read from the den! Error: " + e.getMessage());
         }
-
-        return tasks;
     }
 
     private Task parseTask(String line) throws SigmaWolfException {
@@ -130,11 +124,11 @@ public class Storage {
                 directory.mkdirs();
             }
 
-            FileWriter writer = new FileWriter(file);
-            for (Task task : tasks) {
-                writer.write(taskToString(task) + System.lineSeparator());
-            }
-            writer.close();
+            String content = tasks.stream()
+                    .map(this::taskToString)
+                    .collect(Collectors.joining(System.lineSeparator()));
+            
+            Files.write(Paths.get(filePath), (content + System.lineSeparator()).getBytes());
         } catch (IOException e) {
             throw new SigmaWolfException("The pack couldn't save to the den! Error: " + e.getMessage());
         }
