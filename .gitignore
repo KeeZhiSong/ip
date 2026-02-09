@@ -26,3 +26,6 @@ text-ui-test/EXPECTED-UNIX.TXT
 
 # Documentation
 docs/GIT_COMMIT_GUIDELINES.md
+
+# Screenshots
+Screenshot*.png
