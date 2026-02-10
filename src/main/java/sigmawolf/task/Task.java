@@ -1,5 +1,9 @@
 package sigmawolf.task;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * Represents a task with a description and completion status.
  * This is an abstract base class for different types of tasks.
@@ -8,6 +12,7 @@ public class Task {
     protected String description;
     protected boolean isDone;
     protected TaskType type;
+    protected Set<String> tags;
 
     /**
      * Creates a new task with the given description and type.
@@ -19,6 +24,7 @@ public class Task {
         this.description = description;
         this.isDone = false;
         this.type = type;
+        this.tags = new HashSet<>();
     }
 
     /**
@@ -71,8 +77,53 @@ public class Task {
         return isDone;
     }
 
+    /**
+     * Adds a tag to this task.
+     *
+     * @param tag The tag to add (without #).
+     */
+    public void addTag(String tag) {
+        tags.add(tag.toLowerCase());
+    }
+
+    /**
+     * Removes a tag from this task.
+     *
+     * @param tag The tag to remove (without #).
+     * @return true if tag was removed, false if tag didn't exist.
+     */
+    public boolean removeTag(String tag) {
+        return tags.remove(tag.toLowerCase());
+    }
+
+    /**
+     * Returns all tags associated with this task.
+     *
+     * @return Set of tags.
+     */
+    public Set<String> getTags() {
+        return new HashSet<>(tags);
+    }
+
+    /**
+     * Returns a formatted string of all tags.
+     *
+     * @return String like "#fun #urgent" or empty string if no tags.
+     */
+    public String getTagsString() {
+        if (tags.isEmpty()) {
+            return "";
+        }
+        return tags.stream()
+                .sorted()
+                .map(tag -> "#" + tag)
+                .collect(Collectors.joining(" "));
+    }
+
     @Override
     public String toString() {
-        return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;
+        String tagString = getTagsString();
+        String baseString = "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description;
+        return tagString.isEmpty() ? baseString : baseString + " " + tagString;
     }
 }

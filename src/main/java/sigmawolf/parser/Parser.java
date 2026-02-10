@@ -188,4 +188,32 @@ public class Parser {
             throw new SigmaWolfException("That's not a valid number! Use numbers for task indices.");
         }
     }
+
+    /**
+     * Parses tag command arguments to extract task number and tag name.
+     *
+     * @param arguments The arguments containing task number and tag (e.g., "1 #important").
+     * @return An array where [0] is the zero-based task index and [1] is the tag name.
+     * @throws SigmaWolfException If the arguments are invalid.
+     */
+    public static String[] parseTag(String arguments) throws SigmaWolfException {
+        String[] parts = arguments.trim().split("\\s+", 2);
+        if (parts.length < 2) {
+            throw new SigmaWolfException("Tag command needs task number and tag! Use: tag 1 #tagname");
+        }
+
+        int taskIndex = parseTaskIndex(parts[0]);
+        String tag = parts[1].trim();
+
+        if (!tag.startsWith("#")) {
+            throw new SigmaWolfException("Tags must start with #! Use: tag 1 #tagname");
+        }
+
+        tag = tag.substring(1); // Remove the # prefix
+        if (tag.isEmpty()) {
+            throw new SigmaWolfException("Tag name cannot be empty!");
+        }
+
+        return new String[] { String.valueOf(taskIndex), tag };
+    }
 }

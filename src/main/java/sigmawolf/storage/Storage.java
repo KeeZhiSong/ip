@@ -1,7 +1,6 @@
 package sigmawolf.storage;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -62,7 +61,7 @@ public class Storage {
         }
     }
 
-    private Task parseTask(String line) throws SigmaWolfException {
+    private Task parseTask(String line) {
         try {
             String[] parts = line.split(" \\| ");
             if (parts.length < 3) {
@@ -102,6 +101,15 @@ public class Storage {
                 task.markAsDone();
             }
 
+            // Parse tags if present (last field)
+            int lastIndex = type.equals("T") ? 3 : (type.equals("D") ? 4 : 5);
+            if (parts.length > lastIndex && !parts[lastIndex].trim().isEmpty()) {
+                String[] tags = parts[lastIndex].split(",");
+                for (String tag : tags) {
+                    task.addTag(tag.trim());
+                }
+            }
+
             return task;
         } catch (Exception e) {
             // Corrupted data, skip this line
@@ -128,7 +136,7 @@ public class Storage {
             String content = tasks.stream()
                     .map(this::taskToString)
                     .collect(Collectors.joining(System.lineSeparator()));
-            
+
             Files.write(Paths.get(filePath), (content + System.lineSeparator()).getBytes());
         } catch (IOException e) {
             throw new SigmaWolfException("The pack couldn't save to the den! Error: " + e.getMessage());
@@ -140,16 +148,18 @@ public class Storage {
         String type = task.getTypeIcon();
         String description = task.getDescription();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String tags = String.join(",", task.getTags());
 
         if (task instanceof Todo) {
-            return String.format("T | %s | %s", isDone, description);
+            return String.format("T | %s | %s | %s", isDone, description, tags);
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return String.format("D | %s | %s | %s", isDone, description, deadline.getBy().format(formatter));
+            return String.format("D | %s | %s | %s | %s", isDone, description,
+                deadline.getBy().format(formatter), tags);
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return String.format("E | %s | %s | %s | %s", isDone, description,
-                event.getFrom().format(formatter), event.getTo().format(formatter));
+            return String.format("E | %s | %s | %s | %s | %s", isDone, description,
+                event.getFrom().format(formatter), event.getTo().format(formatter), tags);
         }
 
         return "";
