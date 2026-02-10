@@ -16,7 +16,7 @@ import sigmawolf.ui.Ui;
  */
 public class SigmaWolf {
     private static final String ERROR_PREFIX = "GRRR!!! ";
-    
+
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
@@ -89,6 +89,14 @@ public class SigmaWolf {
                     handleFind(arguments);
                     ui.showLine();
                     break;
+                case "tag":
+                    handleTag(arguments);
+                    ui.showLine();
+                    break;
+                case "untag":
+                    handleUntag(arguments);
+                    ui.showLine();
+                    break;
                 default:
                     throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
                 }
@@ -156,6 +164,34 @@ public class SigmaWolf {
         ui.showFindResults(matchingTasks);
     }
 
+    private void handleTag(String arguments) throws SigmaWolfException {
+        String[] parsed = Parser.parseTag(arguments);
+        int index = Integer.parseInt(parsed[0]);
+        String tag = parsed[1];
+
+        if (index < 0 || index >= tasks.size()) {
+            throw new SigmaWolfException("Invalid task number! The pack only has " + tasks.size() + " tasks.");
+        }
+
+        tasks.get(index).addTag(tag);
+        storage.save(tasks.getTasks());
+        System.out.println("  Tagged task: " + tasks.get(index).toString());
+    }
+
+    private void handleUntag(String arguments) throws SigmaWolfException {
+        String[] parsed = Parser.parseTag(arguments);
+        int index = Integer.parseInt(parsed[0]);
+        String tag = parsed[1];
+
+        if (index < 0 || index >= tasks.size()) {
+            throw new SigmaWolfException("Invalid task number! The pack only has " + tasks.size() + " tasks.");
+        }
+
+        tasks.get(index).removeTag(tag);
+        storage.save(tasks.getTasks());
+        System.out.println("  Removed tag from task: " + tasks.get(index).toString());
+    }
+
     /**
      * Generates a response for the user's chat message.
      *
@@ -186,6 +222,10 @@ public class SigmaWolf {
                 return handleEventForGui(arguments);
             case "find":
                 return handleFindForGui(arguments);
+            case "tag":
+                return handleTagForGui(arguments);
+            case "untag":
+                return handleUntagForGui(arguments);
             default:
                 throw new SigmaWolfException("The pack doesn't understand that command. Speak clearly!");
             }
@@ -288,6 +328,42 @@ public class SigmaWolf {
             sb.append((i + 1)).append(".").append(matchingTasks.get(i)).append("\n");
         }
         return sb.toString().trim();
+    }
+
+    private String handleTagForGui(String arguments) throws SigmaWolfException {
+        String[] parsed = Parser.parseTag(arguments);
+        int index = Integer.parseInt(parsed[0]);
+        String tag = parsed[1];
+
+        if (index < 0 || index >= tasks.size()) {
+            throw new SigmaWolfException("Invalid task number! The pack only has " + tasks.size() + " tasks.");
+        }
+
+        tasks.get(index).addTag(tag);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "Tagged task: " + tasks.get(index).toString();
+    }
+
+    private String handleUntagForGui(String arguments) throws SigmaWolfException {
+        String[] parsed = Parser.parseTag(arguments);
+        int index = Integer.parseInt(parsed[0]);
+        String tag = parsed[1];
+
+        if (index < 0 || index >= tasks.size()) {
+            throw new SigmaWolfException("Invalid task number! The pack only has " + tasks.size() + " tasks.");
+        }
+
+        tasks.get(index).removeTag(tag);
+        try {
+            storage.save(tasks.getTasks());
+        } catch (SigmaWolfException e) {
+            // Ignore save errors in GUI
+        }
+        return "Removed tag from task: " + tasks.get(index).toString();
     }
 
     public static void main(String[] args) {

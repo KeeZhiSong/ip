@@ -13,15 +13,31 @@ public class TaskList {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Creates a new TaskList with existing tasks.
+     *
+     * @param tasks The list of tasks to initialize with.
+     */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
 
+    /**
+     * Adds a task to the list.
+     *
+     * @param task The task to add.
+     */
     public void add(Task task) {
         assert task != null : "Task to add cannot be null";
         tasks.add(task);
     }
 
+    /**
+     * Removes a task at the specified index.
+     *
+     * @param index The index of the task to remove.
+     * @return The removed task.
+     */
     public Task remove(int index) {
         assert index >= 0 && index < tasks.size() : "Index out of bounds: " + index;
         return tasks.remove(index);
