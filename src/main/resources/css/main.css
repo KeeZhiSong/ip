@@ -99,5 +99,5 @@
 /* VBox (dialog container) */
 #dialogContainer {
     -fx-background-color: transparent;
-    -fx-padding: 10px;
+    -fx-padding: 12px 15px;
 }

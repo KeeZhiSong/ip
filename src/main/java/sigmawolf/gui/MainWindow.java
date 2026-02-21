@@ -54,10 +54,15 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = sigmaWolf.getResponse(input);
-        String commandType = getCommandType(input);
+        boolean isError = response.startsWith("GRRR!!!");
+
+        DialogBox responseBox = isError
+                ? DialogBox.getErrorDialog(response, sigmaWolfImage)
+                : DialogBox.getDukeDialog(response, sigmaWolfImage, getCommandType(input));
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, sigmaWolfImage, commandType)
+                responseBox
         );
         userInput.clear();
     }

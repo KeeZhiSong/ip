@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -39,14 +40,34 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Flips the dialog box such that the ImageView is on the left and text on the right.
+     * Flips the dialog box so the ImageView is on the left and text on the right,
+     * and clips the avatar into a circle.
      */
-    private void flip() {
+    private void flipBase() {
         ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
+
+        // Clip avatar into a circle
+        double radius = displayPicture.getFitWidth() / 2;
+        displayPicture.setClip(new Circle(radius, radius, radius));
+    }
+
+    /**
+     * Flips the dialog box for a normal SigmaWolf reply.
+     */
+    private void flip() {
+        flipBase();
         dialog.getStyleClass().add("reply-label");
+    }
+
+    /**
+     * Flips the dialog box for an error reply with error-specific styling.
+     */
+    private void flipAsError() {
+        flipBase();
+        dialog.getStyleClass().add("error-label");
     }
 
     private void applyCommandStyle(String commandType) {
@@ -69,14 +90,17 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Creates a dialog box for user messages.
+     * Creates a dialog box for user messages (no avatar, right-aligned).
      *
      * @param text The text to display.
-     * @param img The user's avatar image.
+     * @param img The user's avatar image (not displayed).
      * @return A DialogBox displaying the user's message.
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(text, img);
+        db.displayPicture.setVisible(false);
+        db.displayPicture.setManaged(false);
+        return db;
     }
 
     /**
@@ -104,6 +128,19 @@ public class DialogBox extends HBox {
         var db = new DialogBox(text, img);
         db.flip();
         db.applyCommandStyle(commandType);
+        return db;
+    }
+
+    /**
+     * Creates a dialog box for error messages with distinct error styling.
+     *
+     * @param text The error text to display.
+     * @param img The SigmaWolf avatar image.
+     * @return A DialogBox displaying the error message.
+     */
+    public static DialogBox getErrorDialog(String text, Image img) {
+        var db = new DialogBox(text, img);
+        db.flipAsError();
         return db;
     }
 }
