@@ -31,7 +31,9 @@ public class TaskList {
      * @param task The task to add.
      */
     public void add(Task task) {
-        assert task != null : "Task to add cannot be null";
+        if (task == null) {
+            throw new IllegalArgumentException("Task to add cannot be null");
+        }
         tasks.add(task);
     }
 
@@ -42,12 +44,16 @@ public class TaskList {
      * @return The removed task.
      */
     public Task remove(int index) {
-        assert index >= 0 && index < tasks.size() : "Index out of bounds: " + index;
+        if (index < 0 || index >= tasks.size()) {
+            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+        }
         return tasks.remove(index);
     }
 
     public Task get(int index) {
-        assert index >= 0 && index < tasks.size() : "Index out of bounds: " + index;
+        if (index < 0 || index >= tasks.size()) {
+            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+        }
         return tasks.get(index);
     }
 
@@ -66,7 +72,9 @@ public class TaskList {
      * @return A new TaskList containing matching tasks.
      */
     public TaskList findTasks(String keyword) {
-        assert keyword != null : "Search keyword cannot be null";
+        if (keyword == null) {
+            throw new IllegalArgumentException("Search keyword cannot be null");
+        }
         ArrayList<Task> matchingTasks = tasks.stream()
                 .filter(task -> task.getDescription().toLowerCase().contains(keyword.toLowerCase()))
                 .collect(Collectors.toCollection(ArrayList::new));

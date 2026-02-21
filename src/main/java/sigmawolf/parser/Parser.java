@@ -3,6 +3,7 @@ package sigmawolf.parser;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 import sigmawolf.exception.SigmaWolfException;
 import sigmawolf.task.Deadline;
@@ -13,18 +14,23 @@ import sigmawolf.task.Todo;
  * Parses user input and creates task objects.
  */
 public class Parser {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-    private static final String DATE_FORMAT_ERROR = "Invalid date format! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)";
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
+            .ofPattern("uuuu-MM-dd HHmm")
+            .withResolverStyle(ResolverStyle.STRICT);
+    private static final String DATE_FORMAT_ERROR =
+            "Invalid date format or non-existent date! Use: yyyy-MM-dd HHmm (e.g., 2019-12-02 1800)";
 
     /**
      * Extracts the command word from user input.
      *
      * @param input The user input string.
-     * @return The command word.
+     * @return The command word, or empty string if input is blank.
      */
     public static String getCommand(String input) {
-        assert input != null && !input.isEmpty() : "Input cannot be null or empty";
-        String[] parts = input.split(" ", 2);
+        if (input == null || input.trim().isEmpty()) {
+            return "";
+        }
+        String[] parts = input.trim().split("\\s+", 2);
         return parts[0];
     }
 
@@ -35,8 +41,10 @@ public class Parser {
      * @return The arguments after the command word.
      */
     public static String getArguments(String input) {
-        assert input != null : "Input cannot be null";
-        String[] parts = input.split(" ", 2);
+        if (input == null || input.trim().isEmpty()) {
+            return "";
+        }
+        String[] parts = input.trim().split("\\s+", 2);
         return parts.length > 1 ? parts[1] : "";
     }
 
@@ -49,7 +57,7 @@ public class Parser {
      */
     public static int parseTaskNumber(String input) throws SigmaWolfException {
         try {
-            String[] parts = input.split(" ", 2);
+            String[] parts = input.trim().split("\\s+", 2);
             if (parts.length < 2 || parts[1].trim().isEmpty()) {
                 throw new SigmaWolfException("The pack requires a task number! Specify which task.");
             }
@@ -60,17 +68,30 @@ public class Parser {
     }
 
     /**
+     * Validates that a description does not contain pipe characters.
+     *
+     * @param description The description to validate.
+     * @throws SigmaWolfException If the description contains a pipe character.
+     */
+    private static void validateDescription(String description) throws SigmaWolfException {
+        if (description.contains("|")) {
+            throw new SigmaWolfException("Description cannot contain the '|' character!");
+        }
+    }
+
+    /**
      * Parses a todo task from the given arguments.
      *
      * @param arguments The arguments containing the task description.
      * @return A Todo task.
-     * @throws SigmaWolfException If the description is empty.
+     * @throws SigmaWolfException If the description is empty or contains invalid characters.
      */
     public static Todo parseTodo(String arguments) throws SigmaWolfException {
         String description = arguments.trim();
         if (description.isEmpty()) {
             throw new SigmaWolfException("The pack cannot track an empty task! Tell me what needs to be done.");
         }
+        validateDescription(description);
         return new Todo(description);
     }
 
@@ -89,6 +110,9 @@ public class Parser {
             throw new SigmaWolfException(
                     "Deadlines require a /by parameter! Format: deadline <task> /by <yyyy-MM-dd HHmm>");
         }
+        if (arguments.indexOf("/by ") != arguments.lastIndexOf("/by ")) {
+            throw new SigmaWolfException("Only one /by parameter is allowed!");
+        }
 
         int byIndex = arguments.indexOf("/by ");
         String description = arguments.substring(0, byIndex).trim();
@@ -100,6 +124,7 @@ public class Parser {
         if (byString.isEmpty()) {
             throw new SigmaWolfException("The deadline time cannot be empty!");
         }
+        validateDescription(description);
 
         try {
             LocalDateTime by = parseDateTime(byString);
@@ -114,7 +139,7 @@ public class Parser {
      *
      * @param arguments The arguments containing the task description, start and end time.
      * @return An Event task.
-     * @throws SigmaWolfException If arguments are invalid or date format is incorrect.
+     * @throws SigmaWolfException If arguments are invalid, dates are incorrect, or start is not before end.
      */
     public static Event parseEvent(String arguments) throws SigmaWolfException {
         if (arguments.trim().isEmpty()) {
@@ -124,6 +149,12 @@ public class Parser {
             throw new SigmaWolfException(
                     "Events require /from and /to parameters! "
                     + "Format: event <task> /from <yyyy-MM-dd HHmm> /to <yyyy-MM-dd HHmm>");
+        }
+        if (arguments.indexOf("/from ") != arguments.lastIndexOf("/from ")) {
+            throw new SigmaWolfException("Only one /from parameter is allowed!");
+        }
+        if (arguments.indexOf("/to ") != arguments.lastIndexOf("/to ")) {
+            throw new SigmaWolfException("Only one /to parameter is allowed!");
         }
 
         int fromIndex = arguments.indexOf("/from ");
@@ -138,10 +169,17 @@ public class Parser {
         if (fromString.isEmpty() || toString.isEmpty()) {
             throw new SigmaWolfException("The event time cannot be empty!");
         }
+        validateDescription(description);
 
         try {
             LocalDateTime from = parseDateTime(fromString);
             LocalDateTime to = parseDateTime(toString);
+
+            if (!from.isBefore(to)) {
+                throw new SigmaWolfException(
+                        "Event start time must be before end time!");
+            }
+
             return new Event(description, from, to);
         } catch (DateTimeParseException e) {
             throw new SigmaWolfException(DATE_FORMAT_ERROR);
@@ -149,11 +187,11 @@ public class Parser {
     }
 
     /**
-     * Parses a date-time string into a LocalDateTime object.
+     * Parses a date-time string into a LocalDateTime object using strict validation.
      *
      * @param dateTimeString The date-time string to parse.
      * @return The parsed LocalDateTime.
-     * @throws DateTimeParseException If the string is not in the correct format.
+     * @throws DateTimeParseException If the string is not in the correct format or the date does not exist.
      */
     private static LocalDateTime parseDateTime(String dateTimeString) {
         return LocalDateTime.parse(dateTimeString, DATE_FORMATTER);
@@ -212,6 +250,13 @@ public class Parser {
         tag = tag.substring(1); // Remove the # prefix
         if (tag.isEmpty()) {
             throw new SigmaWolfException("Tag name cannot be empty!");
+        }
+        if (tag.contains("|") || tag.contains(",") || tag.contains("#")) {
+            throw new SigmaWolfException(
+                    "Tag name cannot contain '|', ',' or '#' characters!");
+        }
+        if (tag.contains(" ")) {
+            throw new SigmaWolfException("Tag name cannot contain spaces! Use a single word.");
         }
 
         return new String[] { String.valueOf(taskIndex), tag };

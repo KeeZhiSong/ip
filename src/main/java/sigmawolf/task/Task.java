@@ -83,6 +83,13 @@ public class Task {
      * @param tag The tag to add (without #).
      */
     public void addTag(String tag) {
+        if (tag == null || tag.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tag cannot be null or empty");
+        }
+        if (tag.contains("|") || tag.contains(",") || tag.contains("#")) {
+            throw new IllegalArgumentException(
+                    "Tag cannot contain '|', ',' or '#' characters");
+        }
         tags.add(tag.toLowerCase());
     }
 

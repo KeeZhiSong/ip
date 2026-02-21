@@ -2,6 +2,7 @@ package sigmawolf.storage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -27,7 +28,9 @@ public class Storage {
      * @param filePath The path to the data file.
      */
     public Storage(String filePath) {
-        assert filePath != null && !filePath.isEmpty() : "File path cannot be null or empty";
+        if (filePath == null || filePath.isEmpty()) {
+            throw new IllegalArgumentException("File path cannot be null or empty");
+        }
         this.filePath = filePath;
     }
 
@@ -43,7 +46,10 @@ public class Storage {
         // Create directory if it doesn't exist
         File directory = file.getParentFile();
         if (directory != null && !directory.exists()) {
-            directory.mkdirs();
+            if (!directory.mkdirs()) {
+                throw new SigmaWolfException(
+                        "Failed to create data directory: " + directory.getPath());
+            }
         }
 
         // If file doesn't exist, return empty list
@@ -52,7 +58,7 @@ public class Storage {
         }
 
         try {
-            return Files.lines(Paths.get(filePath))
+            return Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)
                     .map(this::parseTask)
                     .filter(task -> task != null)
                     .collect(Collectors.toCollection(ArrayList::new));
@@ -130,14 +136,19 @@ public class Storage {
             // Create directory if it doesn't exist
             File directory = file.getParentFile();
             if (directory != null && !directory.exists()) {
-                directory.mkdirs();
+                if (!directory.mkdirs()) {
+                    throw new SigmaWolfException(
+                            "Failed to create data directory: "
+                                    + directory.getPath());
+                }
             }
 
             String content = tasks.stream()
                     .map(this::taskToString)
                     .collect(Collectors.joining(System.lineSeparator()));
 
-            Files.write(Paths.get(filePath), (content + System.lineSeparator()).getBytes());
+            Files.write(Paths.get(filePath),
+                    (content + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new SigmaWolfException("The pack couldn't save to the den! Error: " + e.getMessage());
         }

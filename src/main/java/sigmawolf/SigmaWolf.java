@@ -200,6 +200,10 @@ public class SigmaWolf {
      */
     public String getResponse(String input) {
         try {
+            if (input == null || input.trim().isEmpty()) {
+                throw new SigmaWolfException(
+                        "The pack awaits your command! Type something.");
+            }
             String command = Parser.getCommand(input);
             String arguments = Parser.getArguments(input);
 
@@ -247,6 +251,11 @@ public class SigmaWolf {
 
     private String handleMarkForGui(String input) throws SigmaWolfException {
         int taskIndex = Parser.parseTaskIndex(input);
+        if (taskIndex < 0 || taskIndex >= tasks.size()) {
+            throw new SigmaWolfException(
+                    "Invalid task number! The pack only has "
+                            + tasks.size() + " tasks.");
+        }
         Task task = tasks.get(taskIndex);
         tasks.markTask(taskIndex);
         try {
@@ -259,6 +268,11 @@ public class SigmaWolf {
 
     private String handleUnmarkForGui(String input) throws SigmaWolfException {
         int taskIndex = Parser.parseTaskIndex(input);
+        if (taskIndex < 0 || taskIndex >= tasks.size()) {
+            throw new SigmaWolfException(
+                    "Invalid task number! The pack only has "
+                            + tasks.size() + " tasks.");
+        }
         Task task = tasks.get(taskIndex);
         tasks.unmarkTask(taskIndex);
         try {
@@ -271,6 +285,11 @@ public class SigmaWolf {
 
     private String handleDeleteForGui(String input) throws SigmaWolfException {
         int taskIndex = Parser.parseTaskIndex(input);
+        if (taskIndex < 0 || taskIndex >= tasks.size()) {
+            throw new SigmaWolfException(
+                    "Invalid task number! The pack only has "
+                            + tasks.size() + " tasks.");
+        }
         Task task = tasks.deleteTask(taskIndex);
         try {
             storage.save(tasks.getTasks());
