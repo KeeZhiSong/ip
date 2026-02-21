@@ -366,6 +366,11 @@ public class SigmaWolf {
         return "Removed tag from task: " + tasks.get(index).toString();
     }
 
+    /**
+     * Starts the SigmaWolf CLI chatbot.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         new SigmaWolf("./data/sigmawolf.txt").run();
     }

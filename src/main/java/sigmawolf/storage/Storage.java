@@ -155,11 +155,11 @@ public class Storage {
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
             return String.format("D | %s | %s | %s | %s", isDone, description,
-                deadline.getBy().format(formatter), tags);
+                    deadline.getBy().format(formatter), tags);
         } else if (task instanceof Event) {
             Event event = (Event) task;
             return String.format("E | %s | %s | %s | %s | %s", isDone, description,
-                event.getFrom().format(formatter), event.getTo().format(formatter), tags);
+                    event.getFrom().format(formatter), event.getTo().format(formatter), tags);
         }
 
         return "";

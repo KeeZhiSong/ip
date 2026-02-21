@@ -1,3 +1,5 @@
+package sigmawolf.gui;
+
 import java.io.IOException;
 
 import javafx.application.Application;

@@ -1,3 +1,5 @@
+package sigmawolf.gui;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -40,13 +42,12 @@ public class MainWindow extends AnchorPane {
         );
     }
 
-    /** Injects the SigmaWolf instance */
     public void setSigmaWolf(SigmaWolf s) {
         sigmaWolf = s;
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing SigmaWolf's reply and then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML

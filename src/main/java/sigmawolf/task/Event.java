@@ -40,6 +40,6 @@ public class Event extends Task {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
         return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description
-            + " (from: " + from.format(formatter) + " to: " + to.format(formatter) + ")";
+                + " (from: " + from.format(formatter) + " to: " + to.format(formatter) + ")";
     }
 }

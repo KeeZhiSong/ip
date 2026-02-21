@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 /**
  * Represents a task with a description and completion status.
- * This is an abstract base class for different types of tasks.
+ * This is the base class for different types of tasks.
  */
 public class Task {
     protected String description;

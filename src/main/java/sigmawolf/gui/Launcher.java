@@ -1,3 +1,5 @@
+package sigmawolf.gui;
+
 import javafx.application.Application;
 
 /**

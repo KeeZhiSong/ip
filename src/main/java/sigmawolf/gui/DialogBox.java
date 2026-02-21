@@ -1,3 +1,5 @@
+package sigmawolf.gui;
+
 import java.io.IOException;
 import java.util.Collections;
 
@@ -66,16 +68,38 @@ public class DialogBox extends HBox {
         }
     }
 
+    /**
+     * Creates a dialog box for user messages.
+     *
+     * @param text The text to display.
+     * @param img The user's avatar image.
+     * @return A DialogBox displaying the user's message.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Creates a dialog box for SigmaWolf's replies.
+     *
+     * @param text The text to display.
+     * @param img The SigmaWolf avatar image.
+     * @return A DialogBox displaying SigmaWolf's reply.
+     */
     public static DialogBox getDukeDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
         return db;
     }
 
+    /**
+     * Creates a dialog box for SigmaWolf's replies with command-specific styling.
+     *
+     * @param text The text to display.
+     * @param img The SigmaWolf avatar image.
+     * @param commandType The type of command for styling (e.g., "add", "delete").
+     * @return A DialogBox displaying SigmaWolf's reply with styling.
+     */
     public static DialogBox getDukeDialog(String text, Image img, String commandType) {
         var db = new DialogBox(text, img);
         db.flip();
