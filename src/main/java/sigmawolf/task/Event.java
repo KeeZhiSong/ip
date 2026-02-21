@@ -32,6 +32,11 @@ public class Event extends Task {
         return from;
     }
 
+    /**
+     * Gets the end time of the event.
+     *
+     * @return The end time.
+     */
     public LocalDateTime getTo() {
         return to;
     }
