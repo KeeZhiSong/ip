@@ -1,6 +1,8 @@
 package sigmawolf.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -119,5 +121,63 @@ public class TaskListTest {
         assertEquals(2, taskList.size());
         assertTrue(taskList.contains(todo1));
         assertTrue(taskList.contains(todo2));
+    }
+
+    // New error handling and method coverage tests
+
+    @Test
+    public void add_nullTask_exceptionThrown() {
+        assertThrows(IllegalArgumentException.class, () -> tasks.add(null));
+    }
+
+    @Test
+    public void remove_negativeIndex_exceptionThrown() {
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.remove(-1));
+    }
+
+    @Test
+    public void remove_outOfRangeIndex_exceptionThrown() {
+        tasks.add(todo1);
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.remove(5));
+    }
+
+    @Test
+    public void get_negativeIndex_exceptionThrown() {
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(-1));
+    }
+
+    @Test
+    public void get_outOfRangeIndex_exceptionThrown() {
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(0));
+    }
+
+    @Test
+    public void findTasks_nullKeyword_exceptionThrown() {
+        assertThrows(IllegalArgumentException.class, () -> tasks.findTasks(null));
+    }
+
+    @Test
+    public void markTask_validIndex_taskMarked() {
+        tasks.add(todo1);
+        tasks.markTask(0);
+        assertTrue(tasks.get(0).isDone());
+    }
+
+    @Test
+    public void unmarkTask_validIndex_taskUnmarked() {
+        tasks.add(todo1);
+        tasks.markTask(0);
+        assertTrue(tasks.get(0).isDone());
+
+        tasks.unmarkTask(0);
+        assertFalse(tasks.get(0).isDone());
+    }
+
+    @Test
+    public void deleteTask_validIndex_returnsRemovedTask() {
+        tasks.add(todo1);
+        Task removed = tasks.deleteTask(0);
+        assertEquals(todo1, removed);
+        assertEquals(0, tasks.size());
     }
 }

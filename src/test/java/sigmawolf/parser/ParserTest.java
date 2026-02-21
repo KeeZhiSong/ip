@@ -123,4 +123,131 @@ public class ParserTest {
         assertThrows(SigmaWolfException.class, () -> Parser.parseFind(""));
         assertThrows(SigmaWolfException.class, () -> Parser.parseFind("   "));
     }
+
+    // New tests for null/blank input handling
+
+    @Test
+    public void getCommand_nullInput_returnsEmpty() {
+        assertEquals("", Parser.getCommand(null));
+    }
+
+    @Test
+    public void getCommand_blankInput_returnsEmpty() {
+        assertEquals("", Parser.getCommand("   "));
+    }
+
+    @Test
+    public void getArguments_nullInput_returnsEmpty() {
+        assertEquals("", Parser.getArguments(null));
+    }
+
+    @Test
+    public void getArguments_blankInput_returnsEmpty() {
+        assertEquals("", Parser.getArguments("   "));
+    }
+
+    @Test
+    public void getCommand_multipleSpaces_extractsCorrectly() {
+        assertEquals("todo", Parser.getCommand("todo    read book"));
+    }
+
+    // New tests for duplicate parameter detection
+
+    @Test
+    public void parseDeadline_duplicateBy_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseDeadline("task /by 2026-01-01 1200 /by 2026-02-01 1200"));
+    }
+
+    @Test
+    public void parseEvent_duplicateFrom_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseEvent("task /from 2026-01-01 1200 /from 2026-01-01 1300 /to 2026-01-01 1400"));
+    }
+
+    @Test
+    public void parseEvent_duplicateTo_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseEvent("task /from 2026-01-01 1200 /to 2026-01-01 1300 /to 2026-01-01 1400"));
+    }
+
+    // New tests for event time validation
+
+    @Test
+    public void parseEvent_startAfterEnd_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseEvent("task /from 2026-01-01 1800 /to 2026-01-01 1200"));
+    }
+
+    @Test
+    public void parseEvent_startEqualsEnd_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseEvent("task /from 2026-01-01 1200 /to 2026-01-01 1200"));
+    }
+
+    // New tests for pipe character validation
+
+    @Test
+    public void parseTodo_descriptionWithPipe_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () -> Parser.parseTodo("read|book"));
+    }
+
+    @Test
+    public void parseDeadline_descriptionWithPipe_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseDeadline("read|book /by 2026-01-01 1200"));
+    }
+
+    @Test
+    public void parseEvent_descriptionWithPipe_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseEvent("read|book /from 2026-01-01 1200 /to 2026-01-01 1300"));
+    }
+
+    // New test for strict date parsing (non-existent dates)
+
+    @Test
+    public void parseDeadline_nonExistentDate_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () ->
+                Parser.parseDeadline("task /by 2026-02-30 1200"));
+    }
+
+    // New tests for parseTaskIndex
+
+    @Test
+    public void parseTaskIndex_validInput_returnsZeroBasedIndex() throws SigmaWolfException {
+        assertEquals(0, Parser.parseTaskIndex("1"));
+        assertEquals(4, Parser.parseTaskIndex("5"));
+    }
+
+    @Test
+    public void parseTaskIndex_invalidInput_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () -> Parser.parseTaskIndex("abc"));
+    }
+
+    // New tests for parseTag
+
+    @Test
+    public void parseTag_validInput_returnsCorrectArray() throws SigmaWolfException {
+        String[] result = Parser.parseTag("1 #important");
+        assertEquals("0", result[0]); // zero-based index
+        assertEquals("important", result[1]);
+    }
+
+    @Test
+    public void parseTag_missingTag_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () -> Parser.parseTag("1"));
+    }
+
+    @Test
+    public void parseTag_tagWithoutHash_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () -> Parser.parseTag("1 important"));
+    }
+
+    @Test
+    public void parseTag_tagWithInvalidChars_exceptionThrown() {
+        assertThrows(SigmaWolfException.class, () -> Parser.parseTag("1 #a|b"));
+        assertThrows(SigmaWolfException.class, () -> Parser.parseTag("1 #a,b"));
+        assertThrows(SigmaWolfException.class, () -> Parser.parseTag("1 #a#b"));
+    }
 }
