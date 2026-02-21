@@ -9,7 +9,7 @@ import sigmawolf.task.TaskList;
  */
 public class Ui {
     private static final String LINE = "____________________________________________________________";
-    private Scanner scanner;
+    private final Scanner scanner;
 
     /**
      * Creates a new Ui instance.
