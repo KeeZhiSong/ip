@@ -147,8 +147,8 @@ public class Storage {
                     .map(this::taskToString)
                     .collect(Collectors.joining(System.lineSeparator()));
 
-            Files.write(Paths.get(filePath),
-                    (content + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = (content + System.lineSeparator()).getBytes(StandardCharsets.UTF_8);
+            Files.write(Paths.get(filePath), bytes);
         } catch (IOException e) {
             throw new SigmaWolfException("The pack couldn't save to the den! Error: " + e.getMessage());
         }
